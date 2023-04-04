@@ -3,7 +3,7 @@ import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 @Schema()
 export class Account {
     @Prop()
-    userId: number;
+    userId: string;
 
     @Prop({ type: Object })
     metamask: {
