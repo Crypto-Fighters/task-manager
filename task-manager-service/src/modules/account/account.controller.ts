@@ -2,8 +2,9 @@ import {Body, Controller, Delete, Post, Put} from '@nestjs/common';
 import {AccountsService} from "./accounts.service";
 import {BaseRequest} from "../../types/common";
 import {AccountCreateRequest, AccountRemoveRequest, AccountUpdateRequest} from "../../types/account";
-import {ApiBody} from "@nestjs/swagger";
+import {ApiBody, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('Accounts')
 @Controller('accounts')
 export class AccountController {
   constructor(

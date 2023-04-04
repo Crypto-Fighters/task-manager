@@ -23,5 +23,5 @@ export class JobCreateRequest extends BaseRequest<{
 }> {}
 
 export class JobRemoveRequest extends BaseRequest<{
-    jobComment: string,
+    jobId: string,
 }> {}

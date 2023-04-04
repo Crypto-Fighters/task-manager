@@ -2,8 +2,9 @@ import {Body, Controller, Delete, Post} from '@nestjs/common';
 import {JobsService} from "./jobs.service";
 import {JobCreateRequest, JobRemoveRequest} from "../../types/jobs";
 import {BaseRequest} from "../../types/common";
-import {ApiBody} from "@nestjs/swagger";
+import {ApiBody, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('Jobs')
 @Controller('jobs')
 export class JobController {
   constructor(
