@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
-import {UserSchema} from "./schemas/user.schema";
 import {AccountModule} from "./modules/account/account.module";
 import {JobModule} from "./modules/job/job.module";
+import {UserModule} from "./modules/user/user.module";
+import {AuthModule} from "./modules/auth/auth.module";
 
 @Module({
   imports: [
@@ -15,9 +16,10 @@ import {JobModule} from "./modules/job/job.module";
               useFindAndModify: false,
           }),
       }),
-      MongooseModule.forFeature([{ name: 'user', schema: UserSchema }]),
       AccountModule,
-      JobModule
+      JobModule,
+      UserModule,
+      AuthModule,
   ],
   controllers: [],
   providers: [],

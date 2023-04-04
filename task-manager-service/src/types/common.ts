@@ -1,6 +1,5 @@
 export class BaseRequest<T> {
-    userId: number;
-    token: string;
+    userId: string;
     payload: T;
 }
 
