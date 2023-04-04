@@ -40,7 +40,7 @@ export class JobsService {
     ) {}
 
     async createJob({userId, payload: {mode, date, activityName, accountId, params}}: JobCreateRequest) {
-        const accounts = await this.accounts.find({id: accountId}).exec();
+        const accounts = await this.accounts.find({_id: accountId}).exec();
         if (!accounts.length) {
             return new HttpException('Невозможно создать задачу. Не найден аккаунт!', 409);
         }
@@ -54,10 +54,10 @@ export class JobsService {
                 ...params,
                 metamaskPhrases: acc.metamask.phrases,
                 metamaskPassword: acc.metamask.password,
-                twitterLogin: acc.twitter.login,
-                twitterPassword: acc.twitter.password,
-                discordLogin: acc.discord.login,
-                discordPassword: acc.discord.password
+                twitterLogin: acc?.twitter?.login,
+                twitterPassword: acc?.twitter?.password,
+                discordLogin: acc?.discord?.login,
+                discordPassword: acc?.discord?.password
             }), new Date(date), JSON.stringify(jobObject));
             await saveCronTab(cronTab);
         }
@@ -66,23 +66,19 @@ export class JobsService {
         }
     }
 
-    async removeJob({userId, payload: {jobComment}}: JobRemoveRequest) {
+    async removeJob({userId, payload: {jobId}}: JobRemoveRequest) {
         const cronTab: CronTab = await loadCronTab() as CronTab;
-        try {
-            if (JSON.parse(jobComment).id.startWith(`${userId}-`)) {
-                cronTab.remove({comment:jobComment});
-                return await saveCronTab(cronTab);
-            }
-            throw new HttpException('Невозможно удалить задачу! Возможно вы пытаетесь удалить чужую задачу! Если это не так, то обратитесь к разработчику!', 409);
-        } catch (e) {
-            console.error(e);
-            throw new HttpException('Невозможно удалить задачу! Обратитесь к разработчику!', 409);
+        if (jobId.startsWith(`${userId}-`)) {
+            cronTab.remove({comment: new RegExp(`"id":"${jobId}"`)});
+            return await saveCronTab(cronTab);
         }
+        throw new HttpException('Невозможно удалить задачу! Возможно вы пытаетесь удалить чужую задачу! Если это не так, то обратитесь к разработчику!', 409);
     }
 
     async getAllJobs({userId}: BaseRequest<any>): Promise<Job[]> {
         const cronTab: CronTab = await loadCronTab() as CronTab;
-        return cronTab.jobs({comment: new RegExp(`"id":${userId}-`)}).flatMap((job) => {
+        console.log(cronTab.jobs().map(j => j.command()));
+        return cronTab.jobs({comment: new RegExp(`"id":"${userId}-`)}).flatMap((job) => {
             try {
                 return [JSON.parse(job.comment())];
             } catch (e) {
