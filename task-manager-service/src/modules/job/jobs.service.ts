@@ -75,7 +75,7 @@ export class JobsService {
         throw new HttpException('Невозможно удалить задачу! Возможно вы пытаетесь удалить чужую задачу! Если это не так, то обратитесь к разработчику!', 409);
     }
 
-    async getAllJobs({userId}: BaseRequest<any>): Promise<Job[]> {
+    async getAllJobs(userId: string): Promise<Job[]> {
         const cronTab: CronTab = await loadCronTab() as CronTab;
         console.log(cronTab.jobs().map(j => j.command()));
         return cronTab.jobs({comment: new RegExp(`"id":"${userId}-`)}).flatMap((job) => {

@@ -13,7 +13,7 @@ export class AccountsService {
         return await this.accounts.create({...payload, userId});
     }
     
-    async getAccounts({userId}: BaseRequest<any>) {
+    async getAccounts(userId: string) {
         return await this.accounts.find({userId}).exec();
     }
 

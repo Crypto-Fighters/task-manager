@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
-import {todoReducer} from "../modules/todo/reducer";
+import {authReducer} from "../modules/auth/reducer";
+import {dashBoardReducer} from "../modules/main/reducer";
 
 const rootReducer = combineReducers({
-    // you can create more new reducers by another modules
-    todo: todoReducer,
+    auth: authReducer,
+    dashBoard: dashBoardReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

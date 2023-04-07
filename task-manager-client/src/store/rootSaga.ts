@@ -1,7 +1,7 @@
 import { all, fork } from "redux-saga/effects";
-import todoSaga from "../modules/todo/sagas";
+import { authSaga } from "../modules/auth/sagas";
+import {dashBoardSaga} from "../modules/main/sagas";
 
 export function* rootSaga() {
-    // you can paste more new root sagas from another modules
-    yield all([fork(todoSaga)]);
+    yield all([fork(authSaga), fork(dashBoardSaga)]);
 }
