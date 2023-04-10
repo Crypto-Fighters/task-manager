@@ -23,6 +23,6 @@ export class AccountsService {
 
     async updateAccount({userId, payload}: AccountUpdateRequest) {
         const acc = await this.accounts.findOne({userId, _id: payload._id}).exec();
-        return acc.updateOne(payload);
+        return acc.updateOne({...payload, userId});
     }
 }

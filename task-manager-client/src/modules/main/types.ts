@@ -29,3 +29,7 @@ export interface BaseRequest<T> {
     userId: string;
     payload?: T;
 }
+
+export type CreateAccountRequest = BaseRequest<Omit<Account, 'userId' | '_id'>>;
+
+export type EditAccountRequest = BaseRequest<Account>;

@@ -9,7 +9,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
+    DialogTitle, Divider,
     IconButton,
     Stack,
     TextField,
@@ -20,7 +20,8 @@ import {Account} from "../types";
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
 import {accountsSelector} from "../selectors";
-import {fetchAccounts} from "../actions";
+import {addAccount, editAccount} from "../actions";
+import {omit} from "lodash";
 
 const useStyles = makeStyles()(() => ({
     tableRoot: {
@@ -31,20 +32,31 @@ const useStyles = makeStyles()(() => ({
             height: '100%',
         }
     },
+    inputsBlock: {
+        display: 'flex',
+        gap: '15px',
+
+        '& > div': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+        },
+
+        '& hr': {
+            width: 1,
+            height: 125,
+        }
+    }
 }));
 
 export const AccountsTable = () => {
     const [createModalOpen, setCreateModalOpen] = useState(false);
-    const accounts = useSelector(accountsSelector);
-    const dispatch = useDispatch();
+    const accounts: Account[] = useSelector(accountsSelector);
     const {classes} = useStyles();
-
-    useEffect(() => {
-        dispatch(fetchAccounts.request());
-    }, []);
+    const dispatch = useDispatch();
 
     const handleCreateNewRow = (newAccount: Account) => {
-
+        dispatch(addAccount.request(omit(newAccount, ['_id', 'metamask.balance']) as any));
     };
 
     const handleDeleteRow = useCallback(
@@ -63,24 +75,25 @@ export const AccountsTable = () => {
 
     const columns = useMemo<MRT_ColumnDef<Account>[]>(
         () => [
-            {
-                accessorKey: '_id',
-                header: 'ID',
-                enableColumnOrdering: false,
-                size: 20,
-                enableEditing: false,
-                enableSorting: false,
-            },
+            // {
+            //     accessorKey: '_id',
+            //     header: 'ID',
+            //     enableColumnOrdering: false,
+            //     size: 20,
+            //     enableEditing: false,
+            //     enableSorting: false,
+            // },
             {
                 accessorKey: 'metamask.phrases',
                 header: 'Metamask фразы',
             },
             {
                 accessorKey: 'metamask.password',
-                header: 'Metamask пароль для расширения',
+                header: 'Metamask пароль',
             },
             {
                 accessorKey: 'metamask.balance',
+                enableEditing: false,
                 header: 'Metamask баланс (скоро)',
             },
             {
@@ -97,7 +110,7 @@ export const AccountsTable = () => {
             },
             {
                 accessorKey: 'discord.password',
-                header: 'Dwitter пароль',
+                header: 'Discord пароль',
             },
         ],
         [],
@@ -117,8 +130,10 @@ export const AccountsTable = () => {
                     }}
                     columns={columns}
                     data={accounts}
+                    onEditingRowSave={(props) => dispatch(editAccount.request(props.values)) as any}
                     editingMode="modal" //default
                     enableColumnOrdering
+                    enableEditing
                     renderRowActions={({ row, table }) => (
                         <Box sx={{ display: 'flex', gap: '1rem' }}>
                             <Tooltip arrow placement="left" title="Edit">
@@ -138,8 +153,9 @@ export const AccountsTable = () => {
                             color="secondary"
                             onClick={() => setCreateModalOpen(true)}
                             variant="contained"
+                            style={{borderRadius: '25px', background: '#ff7207'}}
                         >
-                            Create New Account
+                            Добавить аккаунт
                         </Button>
                     )}
                 />
@@ -175,17 +191,70 @@ export const CreateNewAccountModal = ({
         }, {} as any),
     );
 
+    const {classes} = useStyles();
+
     const handleSubmit = () => {
-        //put your validation logic here
         onSubmit(values);
         onClose();
     };
 
     return (
-        <Dialog open={open}>
-            <DialogTitle textAlign="center">Create New Account</DialogTitle>
+        <Dialog open={open} style={{borderRadius: '15px'}}>
+            <DialogTitle textAlign="center">Добавление аккаунта</DialogTitle>
             <DialogContent>
                 <form onSubmit={(e) => e.preventDefault()}>
+                    <div className={classes.inputsBlock}>
+                       <div>
+                           <TextField
+                               label={'Metamask фразы'}
+                               name={'metamask.phrases'}
+                               onChange={(e) =>
+                                   setValues({ ...values, [e.target.name]: e.target.value })
+                               }
+                           />
+                           <TextField
+                               label={'Metamask пароль'}
+                               name={'metamask.password'}
+                               onChange={(e) =>
+                                   setValues({ ...values, [e.target.name]: e.target.value })
+                               }
+                           />
+                       </div>
+                        <Divider orientation='vertical'/>
+                        <div>
+                            <TextField
+                                label={'Twitter логин'}
+                                name={'twitter.login'}
+                                onChange={(e) =>
+                                    setValues({ ...values, [e.target.name]: e.target.value })
+                                }
+                            />
+                            <TextField
+                                label={'Twitter пароль'}
+                                name={'twitter.password'}
+                                onChange={(e) =>
+                                    setValues({ ...values, [e.target.name]: e.target.value })
+                                }
+                            />
+                        </div>
+                        <Divider orientation='vertical'/>
+                        <div>
+                            <TextField
+                                label={'Discord логин'}
+                                name={'discord.login'}
+                                onChange={(e) =>
+                                    setValues({ ...values, [e.target.name]: e.target.value })
+                                }
+                            />
+                            <TextField
+                                label={'Discord пароль'}
+                                name={'discord.password'}
+                                onChange={(e) =>
+                                    setValues({ ...values, [e.target.name]: e.target.value })
+                                }
+                            />
+                        </div>
+                    </div>
                     <Stack
                         sx={{
                             width: '100%',
@@ -193,23 +262,14 @@ export const CreateNewAccountModal = ({
                             gap: '1.5rem',
                         }}
                     >
-                        {columns.filter(col => col.accessorKey !== '_id').map((column) => (
-                            <TextField
-                                key={column.accessorKey}
-                                label={column.header}
-                                name={column.accessorKey}
-                                onChange={(e) =>
-                                    setValues({ ...values, [e.target.name]: e.target.value })
-                                }
-                            />
-                        ))}
+
                     </Stack>
                 </form>
             </DialogContent>
             <DialogActions sx={{ p: '1.25rem' }}>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>Отмена</Button>
                 <Button color="secondary" onClick={handleSubmit} variant="contained">
-                    Create New Account
+                    Добавть новый аккаунт
                 </Button>
             </DialogActions>
         </Dialog>

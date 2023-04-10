@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import {currentUserSelector} from "./modules/auth/selectors";
 import {Main} from "./modules/main";
 import {useNavigate, useRoutes} from "react-router-dom";
+import axios from "axios";
 
 const ThemeRoutes = [
     {
@@ -39,6 +40,8 @@ function App() {
 
     useEffect(() => {
         if (user) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${user.access_token}`;
+
             navigate("/dashboard");
         }
         else navigate("/login");
