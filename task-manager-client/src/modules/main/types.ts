@@ -1,9 +1,13 @@
 import {LOADING_STATE} from "../../utils.comon";
+import {RJSFSchema} from "@rjsf/utils";
 
 export interface DashboardState {
     accountsState: {
         loading: LOADING_STATE;
         accounts: Account[];
+    },
+    jobsState: {
+        definitions: JobDefinition[],
     }
 }
 
@@ -33,3 +37,11 @@ export interface BaseRequest<T> {
 export type CreateAccountRequest = BaseRequest<Omit<Account, 'userId' | '_id'>>;
 
 export type EditAccountRequest = BaseRequest<Account>;
+
+export type RemoveAccountRequest = BaseRequest<Pick<Account, '_id'>>;
+
+export interface JobDefinition {
+    jobId: number;
+    jobName: string;
+    schema: RJSFSchema;
+}

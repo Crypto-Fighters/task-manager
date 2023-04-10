@@ -4,9 +4,10 @@ import {useLocation} from "react-router";
 import Paper from "@mui/material/Paper";
 import {AccountsTab} from "./components/tabs/AccountsTab";
 import {useEffect} from "react";
-import {fetchAccounts} from "./actions";
+import {fetchAccounts, fetchJobDefinitions} from "./actions";
 import {useDispatch, useSelector} from "react-redux";
 import {currentUserSelector} from "../auth/selectors";
+import {JobsTab} from "./components/tabs/JobsTab";
 
 export const Main = () => {
     const location = useLocation();
@@ -16,18 +17,17 @@ export const Main = () => {
     useEffect(() => {
         if (user?.access_token){
             // TODO govno
-            setTimeout(() => dispatch(fetchAccounts.request()), 200);
+            setTimeout(() => {
+                dispatch(fetchAccounts.request());
+                dispatch(fetchJobDefinitions.request());
+            }, 200);
         }
     }, [])
 
     return (
         <div style={{backgroundColor: '#80808026', display: 'flex' }}>
             <Sidebar onSidebarClose={() => {}} isSidebarOpen={true} isMobileSidebarOpen={true}/>
-            {location.pathname.includes('dashboard/task') && (
-                <div style={{width: '100%'}}>
-                    <Paper sx={{height: '300px', margin: '15px  15px 0px', borderRadius: '10px'}}/>
-                </div>
-            )}
+            {location.pathname.includes('dashboard/task') && <JobsTab/>}
             {location.pathname.includes('dashboard/accounts') && <AccountsTab/>}
         </div>
     );

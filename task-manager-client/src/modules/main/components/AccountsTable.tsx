@@ -20,7 +20,7 @@ import {Account} from "../types";
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
 import {accountsSelector, userIdSelector} from "../selectors";
-import {addAccount, editAccount} from "../actions";
+import {addAccount, editAccount, removeAccount} from "../actions";
 import {omit} from "lodash";
 import {normalizeDto} from "../../../utils.comon";
 import {useConfirm} from "material-ui-confirm";
@@ -67,7 +67,7 @@ export const AccountsTable = () => {
     const handleDeleteRow = useCallback(
         (row: MRT_Row<Account>) => {
             confirm({ description: `Вы действительно хотите удалить аккаунт?`, title: 'Подтверждение' }).then(() => {
-
+                dispatch(removeAccount.request({_id: accounts[row.index]._id}))
             }).catch(() => console.log('Удаление аккаунта отменено'));
         },
         [accounts],

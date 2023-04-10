@@ -2,13 +2,16 @@ import { Reducer } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
 import * as actions from './actions';
 import {DashboardState} from './types';
-import {fetchAccounts} from "./actions";
+import {fetchAccounts, fetchJobDefinitions} from "./actions";
 
 const initialState: DashboardState = {
     accountsState: {
         loading: 'IDLE',
         accounts: []
     },
+    jobsState: {
+        definitions: [],
+    }
 };
 
 type Actions = ActionType<typeof actions>;
@@ -32,6 +35,16 @@ export const dashBoardReducer: Reducer<DashboardState, Actions> = (state = initi
                     accounts: action.payload
                 }
             };
+
+        case getType(fetchJobDefinitions.success):
+            return {
+                ...state,
+                jobsState: {
+                    ...state.jobsState,
+                    definitions: action.payload,
+                }
+            };
+
         default:
             return state;
     }
