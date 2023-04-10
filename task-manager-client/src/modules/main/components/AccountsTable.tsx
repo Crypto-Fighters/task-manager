@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import MaterialReactTable, {
     type MRT_ColumnDef,
     type MRT_Row,
@@ -19,9 +19,11 @@ import { Delete, Edit } from '@mui/icons-material';
 import {Account} from "../types";
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {accountsSelector} from "../selectors";
+import {accountsSelector, userIdSelector} from "../selectors";
 import {addAccount, editAccount} from "../actions";
 import {omit} from "lodash";
+import {normalizeDto} from "../../../utils.comon";
+import {useConfirm} from "material-ui-confirm";
 
 const useStyles = makeStyles()(() => ({
     tableRoot: {
@@ -52,6 +54,9 @@ const useStyles = makeStyles()(() => ({
 export const AccountsTable = () => {
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const accounts: Account[] = useSelector(accountsSelector);
+    const userId: string | undefined = useSelector(userIdSelector);
+    const confirm = useConfirm();
+
     const {classes} = useStyles();
     const dispatch = useDispatch();
 
@@ -61,14 +66,9 @@ export const AccountsTable = () => {
 
     const handleDeleteRow = useCallback(
         (row: MRT_Row<Account>) => {
-            // if (
-            //     !confirm(`Are you sure you want to delete ${row.getValue('firstName')}`)
-            // ) {
-            //     return;
-            // }
-            //send api delete request here, then refetch or update local table data for re-render
-            // tableData.splice(row.index, 1);
-            // setTableData([...tableData]);
+            confirm({ description: `Вы действительно хотите удалить аккаунт?`, title: 'Подтверждение' }).then(() => {
+
+            }).catch(() => console.log('Удаление аккаунта отменено'));
         },
         [accounts],
     );
@@ -130,8 +130,14 @@ export const AccountsTable = () => {
                     }}
                     columns={columns}
                     data={accounts}
-                    onEditingRowSave={(props) => dispatch(editAccount.request(props.values)) as any}
-                    editingMode="modal" //default
+                    onEditingRowSave={({row, values, exitEditingMode}) => {
+                        dispatch(editAccount.request({
+                            userId: userId || '',
+                            payload: {...accounts[row.index], ...normalizeDto(values)},
+                        }));
+                        exitEditingMode();
+                    }}
+                    editingMode="modal"
                     enableColumnOrdering
                     enableEditing
                     renderRowActions={({ row, table }) => (

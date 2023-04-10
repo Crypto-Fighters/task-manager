@@ -1,11 +1,12 @@
 import {HttpException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
-import {Job, JobCreateRequest, JobMode, JobRemoveRequest} from "../../types/jobs";
+import {Job, JobCreateRequest, JobDefinition, JobMode, JobRemoveRequest} from "../../types/jobs";
 import {load, CronTab} from 'crontab';
 import {BaseRequest} from "../../types/common";
 import {Account} from "../../schemas/account.schema";
 import {getCommandLine} from "../../utils/common";
+import {JobDefinitions} from "./jobDefinitions";
 
 
 const loadCronTab = async () => {
@@ -39,7 +40,7 @@ export class JobsService {
         @InjectModel('account') private accounts: Model<Account>
     ) {}
 
-    async createJob({userId, payload: {mode, date, activityName, accountId, params}}: JobCreateRequest) {
+    async createJob({userId, payload: {mode, date, activityName, accountId, params, tag}}: JobCreateRequest) {
         const accounts = await this.accounts.find({_id: accountId}).exec();
         if (!accounts.length) {
             return new HttpException('Невозможно создать задачу. Не найден аккаунт!', 409);
@@ -49,7 +50,7 @@ export class JobsService {
             const acc = accounts[0];
             const cronTab: CronTab = await loadCronTab() as CronTab;
             const createdDate = Date.now();
-            const jobObject: Job = {id: `${userId}-${createdDate}`, activityName, accountId, createdDate, mode, nextPlannedDate: date};
+            const jobObject: Job = {id: `${userId}-${createdDate}`, activityName, accountId, createdDate, mode, nextPlannedDate: date, tag};
             cronTab.create(getCommandLine(activityName, {
                 ...params,
                 metamaskPhrases: acc.metamask.phrases,
@@ -85,5 +86,9 @@ export class JobsService {
                 return [];
             }
         });
+    }
+
+    async getAllJobsDefinition(): Promise<JobDefinition[]> {
+        return JobDefinitions;
     }
 }

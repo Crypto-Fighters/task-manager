@@ -1,4 +1,5 @@
 import {Activities, BaseRequest} from "./common";
+import { RJSFSchema } from '@rjsf/utils';
 
 export interface Job {
     id: string;
@@ -7,6 +8,7 @@ export interface Job {
     activityName: string;
     createdDate: number;
     nextPlannedDate: number;
+    tag: string;
 }
 
 export const JobMode = {
@@ -19,9 +21,16 @@ export class JobCreateRequest extends BaseRequest<{
     date: number,
     accountId: number,
     activityName: Activities,
+    tag: string,
     params: Record<string, string>,
 }> {}
 
 export class JobRemoveRequest extends BaseRequest<{
     jobId: string,
 }> {}
+
+export interface JobDefinition {
+    jobId: number;
+    jobName: string;
+    schema: RJSFSchema;
+}

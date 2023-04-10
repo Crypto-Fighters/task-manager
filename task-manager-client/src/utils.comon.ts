@@ -1,3 +1,5 @@
+import {set} from 'lodash';
+
 export type LOADING_STATE = 'IDLE' | 'REQUEST' | 'SUCCESS' | 'FAILURE';
 
 export const inProgress = (state: LOADING_STATE) => state === 'REQUEST';
@@ -39,4 +41,10 @@ export function setCookie(name: string, value: string, options: any = {}) {
     }
 
     document.cookie = updatedCookie;
+}
+
+export function normalizeDto(obj: Record<string, any>) {
+    let result = {};
+    Object.keys(obj).forEach((key) => result = set(result, key, obj[key]));
+    return result;
 }

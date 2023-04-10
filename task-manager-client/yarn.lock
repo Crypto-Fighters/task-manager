@@ -1765,7 +1765,7 @@
     "prop-types" "^15.8.1"
     "react-is" "^18.2.0"
 
-"@mui/material@^5.0.0", "@mui/material@^5.11.10", "@mui/material@^5.4.1", "@mui/material@^5.5.0", "@mui/material@>=5", "@mui/material@>=5.10.7":
+"@mui/material@^5.0.0", "@mui/material@^5.11.10", "@mui/material@^5.4.1", "@mui/material@^5.5.0", "@mui/material@>= 5.0.0", "@mui/material@>=5", "@mui/material@>=5.10.7":
   "integrity" "sha512-++glQqbZ3rMzOWB77yOvqRG+k8+scYTUKVWZpWff+GWsf6L10g9L2wgRhhAS8bDLuxCbXZlPNbSZowXDDw6z6Q=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.11.16.tgz"
   "version" "5.11.16"
@@ -6993,6 +6993,11 @@
     "prop-types" "15.6.2"
     "react-beautiful-dnd" "13.1.0"
     "react-double-scrollbar" "0.0.15"
+
+"material-ui-confirm@^3.0.9":
+  "integrity" "sha512-WEAEG9z4MfwojoUyQiAjrjl8378tYbGKfiwOKz3zHaQKyXcHnFktUmV7b+F+G0yVo8kYrEMk9Bw+HxhA/2Enlw=="
+  "resolved" "https://registry.npmjs.org/material-ui-confirm/-/material-ui-confirm-3.0.9.tgz"
+  "version" "3.0.9"
 
 "mdn-data@2.0.14":
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Param, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {JobsService} from "./jobs.service";
 import {JobCreateRequest, JobRemoveRequest} from "../../types/jobs";
 import {ApiBearerAuth, ApiBody, ApiTags} from "@nestjs/swagger";
@@ -32,5 +32,12 @@ export class JobController {
   @ApiBearerAuth('jwt')
   async getJobs(@Param('userId') userId: string) {
     return await this.jobService.getAllJobs(userId);
+  }
+
+  @Get('all/definitions')
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth('jwt')
+  async getAllJobsDefinition() {
+    return await this.jobService.getAllJobsDefinition();
   }
 }

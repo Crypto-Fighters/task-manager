@@ -10,6 +10,7 @@ import {currentUserSelector} from "./modules/auth/selectors";
 import {Main} from "./modules/main";
 import {useNavigate, useRoutes} from "react-router-dom";
 import axios from "axios";
+import {ConfirmProvider} from "material-ui-confirm";
 
 const ThemeRoutes = [
     {
@@ -51,7 +52,9 @@ function App() {
       <CacheProvider value={cache}>
           <TssCacheProvider value={tssCache}>
               <ThemeProvider theme={theme}>
-                  {routing}
+                  <ConfirmProvider>
+                    {routing}
+                  </ConfirmProvider>
               </ThemeProvider>
           </TssCacheProvider>
       </CacheProvider>
