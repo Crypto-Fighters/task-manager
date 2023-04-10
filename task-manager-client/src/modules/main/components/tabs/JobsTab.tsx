@@ -7,6 +7,7 @@ import {FormControl, InputLabel, MenuItem, OutlinedInput, Select, Theme, useThem
 import {useMemo, useState} from "react";
 import validator from '@rjsf/validator-ajv8';
 import {RJSFSchema} from "@rjsf/utils";
+import {isNumber} from "lodash";
 
 function getStyles(name: string, personName: string[], theme: Theme) {
     return {
@@ -24,12 +25,6 @@ export const JobsTab = () => {
 
     const jobNames = useMemo(() => definitions.map(({jobName}) => jobName), [definitions]);
 
-    const test: RJSFSchema = {
-        type: 'object',
-        properties: {
-            text: { type: 'string' },
-        },
-    };
     return (
         <div style={{width: 'calc(100% - 300px)'}}>
             <Paper sx={{height: '300px', margin: '15px  15px 0px', borderRadius: '10px'}}>
@@ -55,7 +50,7 @@ export const JobsTab = () => {
                 <Form
                     validator={validator}
                     tagName='div'
-                    schema={test}
+                    schema={definitionId && isNumber(definitionId) ? definitions[definitionId].schema : {}}
                     uiSchema={{}}
                     onChange={(value) => {}}
                 >

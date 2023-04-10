@@ -7,7 +7,7 @@ export const JobDefinitions: Array<JobDefinition> = [
         schema: {
             type: 'object',
             properties: {
-                text: { type: 'string', title: 'Сообщение', description: 'Текст сообщения' },
+                text: { type: 'string'},
             },
         }
     }
