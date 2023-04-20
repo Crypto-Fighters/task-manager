@@ -75,14 +75,14 @@ export const AccountsTable = () => {
 
     const columns = useMemo<MRT_ColumnDef<Account>[]>(
         () => [
-            // {
-            //     accessorKey: '_id',
-            //     header: 'ID',
-            //     enableColumnOrdering: false,
-            //     size: 20,
-            //     enableEditing: false,
-            //     enableSorting: false,
-            // },
+            {
+                accessorKey: '_id',
+                header: 'ID',
+                enableColumnOrdering: false,
+                size: 20,
+                enableEditing: false,
+                enableSorting: false,
+            },
             {
                 accessorKey: 'metamask.phrases',
                 header: 'Metamask фразы',

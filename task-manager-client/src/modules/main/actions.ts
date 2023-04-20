@@ -1,5 +1,13 @@
 import { createAsyncAction } from "typesafe-actions";
-import {Account, CreateAccountRequest, EditAccountRequest, JobDefinition, RemoveAccountRequest} from "./types";
+import {
+    Account,
+    AddNewJobRequest,
+    CreateAccountRequest,
+    EditAccountRequest,
+    Job,
+    JobDefinition,
+    RemoveAccountRequest, RemoveJobRequest
+} from "./types";
 
 export const fetchAccounts = createAsyncAction(
     'FETCH_ACCOUNTS_REQUEST',
@@ -30,3 +38,21 @@ export const fetchJobDefinitions = createAsyncAction(
     'GET_JOBS_DEFINITIONS_SUCCESS',
     'GET_JOBS_DEFINITIONS_FAILURE'
 )<void, JobDefinition[], string>();
+
+export const fetchAllJobs = createAsyncAction(
+    'GET_ALL_JOBS_REQUEST',
+    'GET_ALL_JOBS_SUCCESS',
+    'GET_ALL_JOBS_FAILURE'
+)<void, Job[], string>();
+
+export const addNewJob = createAsyncAction(
+    'ADD_NEW_JOB_REQUEST',
+    'ADD_NEW_JOB_SUCCESS',
+    'ADD_NEW_JOB_FAILURE'
+)<AddNewJobRequest['payload'], void, string>();
+
+export const removeJob = createAsyncAction(
+    'ADD_NEW_JOB_REQUEST',
+    'ADD_NEW_JOB_SUCCESS',
+    'ADD_NEW_JOB_FAILURE'
+)<RemoveJobRequest['payload'], void, string>();

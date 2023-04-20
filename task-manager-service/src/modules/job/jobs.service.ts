@@ -40,18 +40,18 @@ export class JobsService {
         @InjectModel('account') private accounts: Model<Account>
     ) {}
 
-    async createJob({userId, payload: {mode, date, activityName, accountId, params, tag}}: JobCreateRequest) {
+    async createJob({userId, payload: {mode, nextPlannedDate, originalJobId, accountId, params, tag}}: JobCreateRequest) {
         const accounts = await this.accounts.find({_id: accountId}).exec();
         if (!accounts.length) {
             return new HttpException('Невозможно создать задачу. Не найден аккаунт!', 409);
         }
 
-        if (mode === JobMode.FIXED && date) {
+        if (mode === JobMode.FIXED && nextPlannedDate) {
             const acc = accounts[0];
             const cronTab: CronTab = await loadCronTab() as CronTab;
             const createdDate = Date.now();
-            const jobObject: Job = {id: `${userId}-${createdDate}`, activityName, accountId, createdDate, mode, nextPlannedDate: date, tag};
-            cronTab.create(getCommandLine(activityName, {
+            const jobObject: Job = {id: `${userId}-${createdDate}`, originalJobId, accountId, createdDate, mode, nextPlannedDate, tag};
+            cronTab.create(getCommandLine(originalJobId, {
                 ...params,
                 metamaskPhrases: acc.metamask.phrases,
                 metamaskPassword: acc.metamask.password,
@@ -59,7 +59,7 @@ export class JobsService {
                 twitterPassword: acc?.twitter?.password,
                 discordLogin: acc?.discord?.login,
                 discordPassword: acc?.discord?.password
-            }), new Date(date), JSON.stringify(jobObject));
+            }), new Date(nextPlannedDate), JSON.stringify(jobObject));
             await saveCronTab(cronTab);
         }
         else {

@@ -7,3 +7,5 @@ export const userIdSelector = createSelector(currentUserSelector, (state) => sta
 export const accountsSelector = createSelector(commonState, (state) => state?.dashBoard.accountsState.accounts);
 
 export const jobsDefinitionsSelector = createSelector(commonState, (state) => state?.dashBoard.jobsState.definitions);
+
+export const jobsSelector = createSelector(commonState, (state) => state?.dashBoard.jobsState.jobs);

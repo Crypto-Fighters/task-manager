@@ -5,7 +5,7 @@ export interface Job {
     id: string;
     accountId: number;
     mode: string;
-    activityName: string;
+    originalJobId: number;
     createdDate: number;
     nextPlannedDate: number;
     tag: string;
@@ -20,9 +20,11 @@ export class JobCreateRequest extends BaseRequest<{
     mode: string,
     date: number,
     accountId: number,
-    activityName: Activities,
+    activityName?: Activities,
+    nextPlannedDate: number;
+    originalJobId: number,
     tag: string,
-    params: Record<string, string>,
+    params?: Record<string, string>,
 }> {}
 
 export class JobRemoveRequest extends BaseRequest<{
@@ -32,5 +34,6 @@ export class JobRemoveRequest extends BaseRequest<{
 export interface JobDefinition {
     jobId: number;
     jobName: string;
+    activity: Activities,
     schema: RJSFSchema;
 }

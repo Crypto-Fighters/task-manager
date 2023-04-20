@@ -8,6 +8,7 @@ export interface DashboardState {
     },
     jobsState: {
         definitions: JobDefinition[],
+        jobs: Job[]
     }
 }
 
@@ -45,3 +46,18 @@ export interface JobDefinition {
     jobName: string;
     schema: RJSFSchema;
 }
+
+export interface Job {
+    id: string;
+    accountId: string;
+    mode: string;
+    createdDate: number;
+    nextPlannedDate: number;
+    params?: Record<string, any>
+    originalJobId: string;
+    tag: string;
+}
+
+export type AddNewJobRequest = BaseRequest<Omit<Job, 'id'>>;
+
+export type RemoveJobRequest = BaseRequest<{jobId: string}>;

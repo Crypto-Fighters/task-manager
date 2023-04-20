@@ -4,7 +4,7 @@ import {useLocation} from "react-router";
 import Paper from "@mui/material/Paper";
 import {AccountsTab} from "./components/tabs/AccountsTab";
 import {useEffect} from "react";
-import {fetchAccounts, fetchJobDefinitions} from "./actions";
+import {fetchAccounts, fetchAllJobs, fetchJobDefinitions} from "./actions";
 import {useDispatch, useSelector} from "react-redux";
 import {currentUserSelector} from "../auth/selectors";
 import {JobsTab} from "./components/tabs/JobsTab";
@@ -20,6 +20,7 @@ export const Main = () => {
             setTimeout(() => {
                 dispatch(fetchAccounts.request());
                 dispatch(fetchJobDefinitions.request());
+                dispatch(fetchAllJobs.request());
             }, 200);
         }
     }, [])
