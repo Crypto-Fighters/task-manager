@@ -1,7 +1,3 @@
-import path from "path";
-
-const dir = path.dirname;
-
 export class BaseRequest<T> {
     userId: string;
     payload: T;
