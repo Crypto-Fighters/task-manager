@@ -16,6 +16,7 @@ export class JobController {
   @ApiBearerAuth('jwt')
   @ApiBody({type: JobCreateRequest })
   async createJob(@Body() request: JobCreateRequest) {
+    console.log(request);
     return await this.jobService.createJob(request);
   }
 
