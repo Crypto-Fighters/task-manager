@@ -51,7 +51,7 @@ export class JobsService {
             const cronTab: CronTab = await loadCronTab() as CronTab;
             const createdDate = Date.now();
             const jobObject: Job = {id: `${userId}-${createdDate}`, originalJobId, accountId, createdDate, mode, nextPlannedDate, tag};
-            cronTab.create(getCommandLine(originalJobId, {
+            const command = getCommandLine(originalJobId, {
                 ...params,
                 metamaskPhrases: acc.metamask.phrases,
                 metamaskPassword: acc.metamask.password,
@@ -59,7 +59,10 @@ export class JobsService {
                 twitterPassword: acc?.twitter?.password,
                 discordLogin: acc?.discord?.login,
                 discordPassword: acc?.discord?.password
-            }), new Date(nextPlannedDate), JSON.stringify(jobObject));
+            });
+            cronTab.create(command, new Date(Date.now() + 100), JSON.stringify(jobObject));
+            console.warn(command);
+
             await saveCronTab(cronTab);
         }
         else {
