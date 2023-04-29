@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {accountsSelector, jobsDefinitionsSelector} from "../../selectors";
 import {
     Autocomplete,
+    Button,
     FormControl,
     InputLabel,
     MenuItem,
@@ -22,10 +23,15 @@ import validator from '@rjsf/validator-ajv8';
 import {isNumber, isString, isUndefined} from "lodash";
 import {makeStyles} from "tss-react/mui";
 import {addNewJob} from "../../actions";
+import {JobsTable} from "../JobsTable";
 
 const useStyles = makeStyles()(() => ({
     customForm: {
         margin: '15px',
+
+        '& button': {
+            display: 'none',
+        }
     },
 }));
 
@@ -49,7 +55,7 @@ export const JobsTab = () => {
     const jobNames = useMemo(() => definitions.map(({jobName}) => jobName), [definitions]);
 
     const isFullData = useMemo(() => {
-        return !!values && !!values?.mode && !!values.tag && !!values.nextPlannedDate && !!values.accountId && !isUndefined(values.originalJobId);
+        return !!values && !!values?.mode && !!values.tag && !!values.accountId && !isUndefined(values.originalJobId);
     }, [values])
 
     const onCreateNewJob = useCallback(() => {
@@ -119,7 +125,7 @@ export const JobsTab = () => {
                                     <DateTimePicker
                                         renderInput={(props) => <TextField {...props}/>}
                                         label="Дата планирования"
-                                        value={values.date}
+                                        value={values.nextPlannedDate}
                                         onChange={(value) => setValues({...(values || {}), nextPlannedDate: value})}
                                     />
                                 </LocalizationProvider>
@@ -139,19 +145,24 @@ export const JobsTab = () => {
                                 validator={validator}
                                 disabled={!isFullData}
                                 className={classes.customForm}
+                                formData={values.params || {}}
                                 tagName='div'
                                 schema={!isString(values.originalJobId) ? definitions[values.originalJobId].schema : { }}
                                 uiSchema={{}}
-                                onSubmit={onCreateNewJob}
                                 onChange={(e) => {
                                     setValues({...(values || {}), params: e.formData})
                                 }}
                             />
                         )
                     }
+                    <Button sx={{marginLeft: 20, marginRight: 20}} color={'primary'} variant="contained" disabled={!isFullData} onClick={onCreateNewJob}>
+                        Submit
+                    </Button>
                 </Stack>
             </Paper>
-            <Paper sx={{height: 20, margin: '15px', display: 'flex', flexGrow: 1, borderRadius: '10px'}}></Paper>
+            <Paper sx={{height: 20, margin: '15px', display: 'flex', flexGrow: 1, borderRadius: '10px'}}>
+                <JobsTable/>
+            </Paper>
         </div>
     );
 }

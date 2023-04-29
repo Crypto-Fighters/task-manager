@@ -15,7 +15,7 @@ export const getAllJobs = async (userId: string) => {
 };
 
 export const addNewJobApi = async (request: AddNewJobRequest) => {
-    const { data } = await axios.post(`${BASE_URL}/jobs/create`);
+    const { data } = await axios.post(`${BASE_URL}/jobs/create`, request);
 
     return data;
 };

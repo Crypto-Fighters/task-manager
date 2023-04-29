@@ -1,3 +1,7 @@
+import path from "path";
+
+const dir = path.dirname;
+
 export class BaseRequest<T> {
     userId: string;
     payload: T;
@@ -8,7 +12,7 @@ export enum Activities {
 }
 
 export const Scripts = {
-    [Activities.HELLO]: 'scripts/hello.js'
+    [Activities.HELLO]: `${dir}/scripts/hello.js`
 }
 
 export const Params = {
