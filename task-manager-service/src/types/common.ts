@@ -12,7 +12,7 @@ export enum Activities {
 }
 
 export const Scripts = {
-    [Activities.HELLO]: `${dir}/scripts/hello.js`
+    [Activities.HELLO]: `${__dirname}/scripts/hello.js`
 }
 
 export const Params = {
