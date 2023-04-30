@@ -33,6 +33,17 @@ const saveCronTab = async (cronTab) => {
     });
 };
 
+function convertUTCDateToLocalDate(date) {
+    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+    var offset = date.getTimezoneOffset() / 60;
+    var hours = date.getHours();
+
+    newDate.setHours(hours - offset);
+
+    return newDate;
+}
+
 @Injectable()
 export class JobsService {
     constructor(
@@ -59,7 +70,7 @@ export class JobsService {
                 twitterPassword: acc?.twitter?.password,
                 discordLogin: acc?.discord?.login,
                 discordPassword: acc?.discord?.password
-            }), new Date(nextPlannedDate), JSON.stringify(jobObject));
+            }), convertUTCDateToLocalDate(new Date(nextPlannedDate)), JSON.stringify(jobObject));
             await saveCronTab(cronTab);
         }
         else {
