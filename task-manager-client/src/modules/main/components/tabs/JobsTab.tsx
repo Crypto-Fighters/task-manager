@@ -2,6 +2,7 @@ import * as React from 'react';
 import Paper from "@mui/material/Paper";
 import {useDispatch, useSelector} from "react-redux";
 import Form from '@rjsf/mui';
+import dayjs from 'dayjs';
 import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -59,7 +60,7 @@ export const JobsTab = () => {
     }, [values])
 
     const onCreateNewJob = useCallback(() => {
-        dispatch(addNewJob.request(values));
+        dispatch(addNewJob.request({...values, nextPlannedDate: dayjs(values.nextPlannedDate).valueOf()}));
         setValues({mode: "FIXED"});
     }, [isFullData, values, dispatch]);
 
@@ -127,7 +128,9 @@ export const JobsTab = () => {
                                         label="Дата планирования"
                                         value={values.nextPlannedDate}
                                         ampm={false}
-                                        onChange={(value) => setValues({...(values || {}), nextPlannedDate: value})}
+                                        onChange={(value) => {
+                                            setValues({...(values || {}), nextPlannedDate: value})
+                                        }}
                                     />
                                 </LocalizationProvider>
                                 <Autocomplete

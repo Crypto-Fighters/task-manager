@@ -3,7 +3,6 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Job, JobCreateRequest, JobDefinition, JobMode, JobRemoveRequest} from "../../types/jobs";
 import {load, CronTab} from 'crontab';
-import {BaseRequest} from "../../types/common";
 import {Account} from "../../schemas/account.schema";
 import {getCommandLine} from "../../utils/common";
 import {JobDefinitions} from "./jobDefinitions";
@@ -70,7 +69,7 @@ export class JobsService {
                 twitterPassword: acc?.twitter?.password,
                 discordLogin: acc?.discord?.login,
                 discordPassword: acc?.discord?.password
-            }), convertUTCDateToLocalDate(new Date(nextPlannedDate)), JSON.stringify(jobObject));
+            }), new Date(nextPlannedDate), JSON.stringify(jobObject));
             await saveCronTab(cronTab);
         }
         else {
