@@ -2,7 +2,7 @@ import * as React from 'react';
 import Paper from "@mui/material/Paper";
 import {useDispatch, useSelector} from "react-redux";
 import Form from '@rjsf/mui';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {accountsSelector, jobsDefinitionsSelector} from "../../selectors";
@@ -122,10 +122,11 @@ export const JobsTab = () => {
                                     </MenuItem>
                                 </Select>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateTimePicker
+                                    <DesktopDateTimePicker
                                         renderInput={(props) => <TextField {...props}/>}
                                         label="Дата планирования"
                                         value={values.nextPlannedDate}
+                                        ampm={false}
                                         onChange={(value) => setValues({...(values || {}), nextPlannedDate: value})}
                                     />
                                 </LocalizationProvider>
