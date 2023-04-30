@@ -12,5 +12,5 @@ export const Scripts = {
 }
 
 export const Params = {
-    [Activities.HELLO]: ['name']
+    [Activities.HELLO]: ['text']
 } as const;
