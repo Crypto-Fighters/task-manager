@@ -65,9 +65,9 @@ export const JobsTable = () => {
 
     const handleDeleteRow = useCallback(
         (row: MRT_Row<Job>) => {
-            confirm({ description: `Вы действительно хотите удалить аккаунт?`, title: 'Подтверждение' }).then(() => {
-                dispatch(removeJob.request({jobId: jobs[row.index].originalJobId}))
-            }).catch(() => console.log('Удаление аккаунта отменено'));
+            confirm({ description: `Вы действительно хотите удалить задачу?`, title: 'Подтверждение' }).then(() => {
+                dispatch(removeJob.request({jobId: jobs[row.index].id}))
+            }).catch(() => console.log('Удаление задачи отменено'));
         },
         [jobs],
     );
@@ -131,7 +131,7 @@ export const JobsTable = () => {
                     ) : null,
             },
         ],
-        [],
+        [definitions],
     );
 
     return (
@@ -148,6 +148,7 @@ export const JobsTable = () => {
                 columns={columns}
                 data={jobs}
                 enableColumnOrdering
+                enableRowActions
                 renderRowActions={({ row, table }) => (
                     <Box sx={{ display: 'flex', gap: '1rem' }}>
                         <Tooltip arrow placement="right" title="Delete">

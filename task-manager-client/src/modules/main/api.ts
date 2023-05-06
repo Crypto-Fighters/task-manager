@@ -21,7 +21,7 @@ export const addNewJobApi = async (request: AddNewJobRequest) => {
 };
 
 export const deleteJobApi = async (request: RemoveJobRequest) => {
-    const { data } = await axios.post(`${BASE_URL}/jobs/remove`, {data: request});
+    const { data } = await axios.delete(`${BASE_URL}/jobs/remove`, {data: request});
 
     return data;
 };

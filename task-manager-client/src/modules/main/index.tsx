@@ -8,6 +8,7 @@ import {fetchAccounts, fetchAllJobs, fetchJobDefinitions} from "./actions";
 import {useDispatch, useSelector} from "react-redux";
 import {currentUserSelector} from "../auth/selectors";
 import {JobsTab} from "./components/tabs/JobsTab";
+import {CalendarTab} from "./components/tabs/CalendarTab";
 
 export const Main = () => {
     const location = useLocation();
@@ -30,6 +31,7 @@ export const Main = () => {
             <Sidebar onSidebarClose={() => {}} isSidebarOpen={true} isMobileSidebarOpen={true}/>
             {location.pathname.includes('dashboard/task') && <JobsTab/>}
             {location.pathname.includes('dashboard/accounts') && <AccountsTab/>}
+            {location.pathname.includes('dashboard/calendar') && <CalendarTab/>}
         </div>
     );
 }

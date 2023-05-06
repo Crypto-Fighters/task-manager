@@ -54,7 +54,7 @@ export interface Job {
     createdDate: number;
     nextPlannedDate: number;
     params?: Record<string, any>
-    originalJobId: string;
+    originalJobId: number;
     tag: string;
 }
 

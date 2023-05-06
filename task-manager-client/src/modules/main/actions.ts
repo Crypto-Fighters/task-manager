@@ -52,7 +52,7 @@ export const addNewJob = createAsyncAction(
 )<AddNewJobRequest['payload'], void, string>();
 
 export const removeJob = createAsyncAction(
-    'ADD_NEW_JOB_REQUEST',
-    'ADD_NEW_JOB_SUCCESS',
-    'ADD_NEW_JOB_FAILURE'
+    'REMOVE_JOB_REQUEST',
+    'REMOVE_JOB_SUCCESS',
+    'REMOVE_JOB_FAILURE'
 )<RemoveJobRequest['payload'], void, string>();

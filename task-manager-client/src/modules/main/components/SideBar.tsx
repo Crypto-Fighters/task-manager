@@ -2,6 +2,9 @@ import React from "react";
 import { useLocation } from "react-router";
 import {
     DashboardOutlined,
+    PersonOutlined,
+    WorkHistoryOutlined,
+    CalendarMonthOutlined
 } from "@mui/icons-material";
 import {Box, Drawer, List, ListItem, ListItemIcon, ListItemText, useMediaQuery} from "@mui/material";
 import {ICON} from "../contans";
@@ -11,17 +14,17 @@ import Typography from "@mui/material/Typography";
 const Menuitems = [
     {
         title: "Аккаунты",
-        icon: DashboardOutlined,
+        icon: PersonOutlined,
         href: "/dashboard/accounts",
     },
     {
         title: "Создать задачу",
-        icon: DashboardOutlined,
+        icon: WorkHistoryOutlined,
         href: "/dashboard/task",
     },
     {
         title: "Календарь",
-        icon: DashboardOutlined,
+        icon: CalendarMonthOutlined,
         href: "/dashboard/calendar",
     },
 ];

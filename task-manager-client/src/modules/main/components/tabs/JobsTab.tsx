@@ -159,9 +159,13 @@ export const JobsTab = () => {
                             />
                         )
                     }
-                    <Button sx={{marginLeft: 20, marginRight: 20}} color={'primary'} variant="contained" disabled={!isFullData} onClick={onCreateNewJob}>
-                        Submit
-                    </Button>
+                    {
+                        (!values?.originalJobId && !isNumber(values.originalJobId)) || (
+                            <Button sx={{marginLeft: 2, marginRight: 2}} color={'primary'} variant="contained" disabled={!isFullData} onClick={onCreateNewJob}>
+                                Submit
+                            </Button>
+                        )
+                    }
                 </Stack>
             </Paper>
             <Paper sx={{height: 20, margin: '15px', display: 'flex', flexGrow: 1, borderRadius: '10px'}}>

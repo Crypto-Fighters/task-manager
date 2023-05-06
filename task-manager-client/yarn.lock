@@ -1375,6 +1375,23 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.35.0.tgz"
   integrity sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==
 
+"@fullcalendar/core@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.1.6.tgz#dba14c2e5a48044b7e932b0bcb20144b3699485c"
+  integrity sha512-Q/3pWgOv7qr/eVpuDz+05jxJZSg7Fdwh4XgQP8DlJFLp5aLlOiiKdkTUIO1BX7clQtYTm8P0v7FqMKbsFiQInw==
+  dependencies:
+    preact "~10.12.1"
+
+"@fullcalendar/daygrid@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-6.1.6.tgz#b60c88ad686b2546daa7eb7ef2369996d14753d2"
+  integrity sha512-HKxprePWXRyg1Shn7p0CWgggFZVwvs+Pg0Z9uSvx6a58wP1yTbOoJHhSVv5CDsfjnq1a0y6DsJbPP/V2LDl6bg==
+
+"@fullcalendar/react@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-6.1.6.tgz#2fc0161bdc79aaa3cece12189bd87ea926abff33"
+  integrity sha512-Ib1jl+4SwlyzM5JsVkhBEoB45hL11sQaN9O600XAa39lK2vSL4d0+ZTBSsBBdmezcHd/iECFk64jS0e3agGPVg==
+
 "@hello-pangea/dnd@^16.0.0":
   version "16.2.0"
   resolved "https://registry.npmjs.org/@hello-pangea/dnd/-/dnd-16.2.0.tgz"
@@ -7924,6 +7941,11 @@ postcss@^8.0.9, postcss@^8.3.5, postcss@^8.4.19, postcss@^8.4.4:
     nanoid "^3.3.4"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+preact@~10.12.1:
+  version "10.12.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.12.1.tgz#8f9cb5442f560e532729b7d23d42fd1161354a21"
+  integrity sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
