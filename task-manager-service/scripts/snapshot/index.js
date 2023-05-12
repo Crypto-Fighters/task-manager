@@ -26,7 +26,7 @@ try {
         const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
         const pathToExtension = path.join(process.cwd(), extensionID);
 
-        const browser = await puppeteer.launch({args: [
+        const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--no-first-run',
