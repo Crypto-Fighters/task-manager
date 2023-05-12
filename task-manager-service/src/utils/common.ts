@@ -1,6 +1,6 @@
 import {Params, Scripts} from "../types/common";
 import {JobDefinitions} from "../modules/job/jobDefinitions";
-import {isArray} from "@nestjs/swagger/dist/plugin/utils/ast-utils";
+import {isArray} from "util";
 
 export const getCommandLine = (jobId: number, params: Record<string, any>) => {
     const job = JobDefinitions.find(job => job.jobId === jobId);
