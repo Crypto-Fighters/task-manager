@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://45.156.23.232:8081';
+export const BASE_URL = 'http://cryptofighters.ddns.net:8080';
