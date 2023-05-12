@@ -1008,6 +1008,11 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@metamask/detect-provider@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
+  integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
+
 "@nestjs/cli@^9.0.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-9.3.0.tgz#654ae6999d06c6da4ca17d5bdf68b7a85429938e"

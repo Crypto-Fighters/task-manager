@@ -1,15 +1,12 @@
 const cli = require("node-cli-params");
-const { startSnapshotVoting } = require("./snapshot");
-
-
+const getActivePropId = require("./snapshot");
 
 const puppeteer = require('puppeteer');
 const path = require('path');
 const phrases = ["accuse stand turtle shallow immense huge rude ankle visa daughter traffic weird", "Dimas23##"];
 
-const privateKey = cli.getKey('privateKey');
 const project = cli.getKey('project');
-const vote = cli.getKey('vote') ? cli.getKey('vote').includes(',') ? cli.getKey('vote').split(',').map(Number) : cli.getKey('vote') : '1';
+const vote = cli.getKey('vote');
 
 function delay(time) {
     return new Promise(function(resolve) {
@@ -17,10 +14,16 @@ function delay(time) {
     });
 }
 
+function randomInteger(min, max) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    return Math.round(rand);
+}
+
 try {
     (async () => {
         const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
         const pathToExtension = path.join(process.cwd(), extensionID);
+
         const browser = await puppeteer.launch({headless: false, args: [
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
@@ -30,17 +33,26 @@ try {
                 '--disable-site-isolation-trials',
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`,
-            ]});
+            ],
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        });
+
 
         await delay(6000);
 
         const pages = await browser.pages()
 
-        let page = pages.find(p => p.url().includes(`chrome-extension://${extensionID}/home.html`));
+        await delay(6000);
+
+        let page = pages.find(p =>
+            p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
+            p.url().includes(`home.html#onboarding/welcome`));
         if (!page) {
             page = await browser.newPage('');
             await page.goto(`chrome-extension://${extensionID}/home.html#onboarding/welcome`);
         }
+
+        // await delay(10000000);
 
         await page.click('button[data-testid="onboarding-import-wallet"]');
 
@@ -64,28 +76,39 @@ try {
 
         await page.click('button[data-testid="create-password-import"]');
 
-        await page.goto(`chrome-extension://${extensionID}/home.html#onboarding/completion`);
+        await delay(3000);
 
+        const completionPage = pages.find(p => p.url().includes(`#onboarding/completion`));
 
-        await page.waitForSelector('button[data-testid="onboarding-complete-done');
+        await completionPage.waitForSelector('button[data-testid="onboarding-complete-done');
 
         await delay(3000);
 
-        await page.click('button[data-testid="onboarding-complete-done"]');
+        await completionPage.click('button[data-testid="onboarding-complete-done"]');
 
+        await completionPage.waitForSelector('button[data-testid="pin-extension-next');
+        await completionPage.click('button[data-testid="pin-extension-next"]');
 
-        await page.waitForSelector('button[data-testid="pin-extension-next');
-        await page.click('button[data-testid="pin-extension-next"]');
+        await completionPage.waitForSelector('button[data-testid="pin-extension-done');
+        await completionPage.click('button[data-testid="pin-extension-done"]');
 
-        await page.waitForSelector('button[data-testid="pin-extension-done');
-        await page.click('button[data-testid="pin-extension-done"]');
+        await completionPage.waitForSelector('div[data-testid="eth-overview__primary-currency"]');
 
+        await completionPage.click('button[data-testid="selected-account-click');
 
-        await page.waitForSelector('div[data-testid="eth-overview__primary-currency"]');
+        const context = browser.defaultBrowserContext();
+        await context.overridePermissions(completionPage.url(), ['clipboard-read']);
 
-        await page.goto('https://snapshot.org');
+        const metamaskWallet = await page.evaluate(() => navigator.clipboard.readText());
+
+        await delay(2000);
+
+        const [propId, maxVoteNumber] = await getActivePropId(project, metamaskWallet);
+
+        await page.goto(`https://snapshot.org/#/${project}/proposal/${propId}`);
 
         await page.waitForSelector('button[data-testid="button-connect-wallet"]');
+
         await page.click('button[data-testid="button-connect-wallet"]');
 
         await page.waitForSelector('button[data-testid="button-connnect-wallet-injected"]');
@@ -93,24 +116,55 @@ try {
 
         await delay(6000);
 
-        const newP = await browser.newPage();
+        const target = browser.targets().find(p => p.url().includes(`notification.html#connect`));
 
-        await newP.goto("chrome-extension://pbhkpaaodgdfhpphppjmheimjcmcliio/notification.html#connect");
+        const targetPage = await target.page();
 
-        await newP.waitForSelector('button[class*="btn-primary"]');
-        await newP.click('button[class*="btn-primary"]');
+        await targetPage.waitForSelector('button[class*="btn-primary"]');
+        await targetPage.click('button[class*="btn-primary"]');
 
-        await newP.waitForSelector('button[data-testid="page-container-footer-next"]');
-        await newP.click('button[data-testid="page-container-footer-next"]');
-        await newP.close();
+        await targetPage.waitForSelector('button[data-testid="page-container-footer-next"]');
+        await targetPage.click('button[data-testid="page-container-footer-next"]');
 
-        // await newP.goto('https://snapshot.org/#/');
+        await delay(5000);
+
+        if (vote === 'random') {
+            const voteNumber = randomInteger(0, maxVoteNumber);
+            await page.waitForSelector(`button[data-testid="sc-choice-button-${voteNumber}"]`);
+            await page.click(`button[data-testid="sc-choice-button-${voteNumber}"]`);
+
+            await delay(2000);
+
+            await page.waitForSelector(`button[data-testid="proposal-vote-button"]`);
+            await page.click(`button[data-testid="proposal-vote-button"]`);
+
+            await delay(4000);
+
+            await page.waitForSelector(`button[data-testid="confirm-vote-button"]`);
+            await page.click(`button[data-testid="confirm-vote-button"]`);
+
+            await delay(2000);
 
 
-        await delay(120000);
+            const target2 = browser.targets().find(p => p.url().includes(`notification.html`));
+            console.log(browser.targets().map(p => p.url()));
 
-        const metamaskObject = await page.evaluate(() => window.ethereum)
-        await startSnapshotVoting(privateKey, project, vote, metamaskObject);
+            const pg = await target2.page();
+
+            await delay(1000);
+
+            await pg.setViewport({width: 500, height: 700});
+
+            await pg.waitForSelector(`div[data-testid="signature-request-scroll-button"]`);
+            await pg.click(`div[data-testid="signature-request-scroll-button"]`);
+
+            await delay(2000);
+
+            await pg.waitForSelector(`button[data-testid="page-container-footer-next"]`);
+            await pg.click(`button[data-testid="page-container-footer-next"]`);
+        }
+
+        await delay(4000);
 
         await browser.close();
     })();

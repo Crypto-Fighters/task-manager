@@ -9,7 +9,7 @@ import {AuthModule} from "./modules/auth/auth.module";
   imports: [
       MongooseModule.forRootAsync({
           useFactory: async () => ({
-              uri: 'mongodb://localhost:27017',
+              uri: 'mongodb://localhost:27018',
               useNewUrlParser: true,
               useUnifiedTopology: true,
               useCreateIndex: true,
