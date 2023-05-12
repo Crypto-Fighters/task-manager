@@ -26,7 +26,7 @@ try {
         const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
         const pathToExtension = path.join(process.cwd(), extensionID);
 
-        const browser = await puppeteer.launch({headless: false, args: [
+        const browser = await puppeteer.launch({args: [
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--no-first-run',
@@ -36,7 +36,6 @@ try {
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`,
             ],
-            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
         });
 
 
