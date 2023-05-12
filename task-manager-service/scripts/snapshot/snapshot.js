@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 async function getActivePropId(project, metamaskWallet) {
-    console.log('start');
 
     const response = await fetch('https://hub.snapshot.org/graphql', {
         method: 'POST',

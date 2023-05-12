@@ -3,10 +3,12 @@ const getActivePropId = require("./snapshot");
 
 const puppeteer = require('puppeteer');
 const path = require('path');
-const phrases = ["accuse stand turtle shallow immense huge rude ankle visa daughter traffic weird", "Dimas23##"];
-
-const project = cli.getKey('project');
+const projects = cli.getKey('projects').split('|');
 const vote = cli.getKey('vote');
+
+const metamaskPh = cli.getKey('metamaskPhrases');
+// accuse stand turtle shallow immense huge rude ankle visa daughter traffic weird
+const phrases = [metamaskPh, "Dimas23##"];
 
 function delay(time) {
     return new Promise(function(resolve) {
@@ -38,11 +40,14 @@ try {
         });
 
 
+
         await delay(6000);
 
         const pages = await browser.pages()
 
         await delay(6000);
+
+
 
         let page = pages.find(p =>
             p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
@@ -51,6 +56,8 @@ try {
             page = await browser.newPage('');
             await page.goto(`chrome-extension://${extensionID}/home.html#onboarding/welcome`);
         }
+
+        page.setDefaultTimeout(120000);
 
         // await delay(10000000);
 
@@ -79,7 +86,7 @@ try {
         await delay(3000);
 
         const completionPage = pages.find(p => p.url().includes(`#onboarding/completion`));
-
+        completionPage.setDefaultTimeout(120000);
         await completionPage.waitForSelector('button[data-testid="onboarding-complete-done');
 
         await delay(3000);
@@ -103,68 +110,90 @@ try {
 
         await delay(2000);
 
-        const [propId, maxVoteNumber] = await getActivePropId(project, metamaskWallet);
+        let activeProp = undefined;
 
-        await page.goto(`https://snapshot.org/#/${project}/proposal/${propId}`);
+        for (const project of projects) {
+            do {
+                console.log(project);
+                activeProp = await getActivePropId(project, metamaskWallet);
 
-        await page.waitForSelector('button[data-testid="button-connect-wallet"]');
+                if (activeProp !== undefined) {
+                    const [propId, maxVoteNumber] = activeProp;
 
-        await page.click('button[data-testid="button-connect-wallet"]');
+                    await page.goto(`https://snapshot.org/#/${project}/proposal/${propId}`);
 
-        await page.waitForSelector('button[data-testid="button-connnect-wallet-injected"]');
-        await page.click('button[data-testid="button-connnect-wallet-injected"]');
+                    await delay(10000);
 
-        await delay(6000);
+                    if (await page.$('button[data-testid="post-vote-modal-close"]') !== null) {
+                        await page.click('button[data-testid="post-vote-modal-close"]');
+                    }
 
-        const target = browser.targets().find(p => p.url().includes(`notification.html#connect`));
+                    if (await page.$('button[data-testid="button-connect-wallet"]') !== null) {
+                        await page.waitForSelector('button[data-testid="button-connect-wallet"]');
 
-        const targetPage = await target.page();
+                        await page.click('button[data-testid="button-connect-wallet"]');
 
-        await targetPage.waitForSelector('button[class*="btn-primary"]');
-        await targetPage.click('button[class*="btn-primary"]');
+                        await page.waitForSelector('button[data-testid="button-connnect-wallet-injected"]');
+                        await page.click('button[data-testid="button-connnect-wallet-injected"]');
 
-        await targetPage.waitForSelector('button[data-testid="page-container-footer-next"]');
-        await targetPage.click('button[data-testid="page-container-footer-next"]');
+                        await delay(6000);
 
-        await delay(5000);
+                        const target = browser.targets().find(p => p.url().includes(`notification.html#connect`));
 
-        if (vote === 'random') {
-            const voteNumber = randomInteger(0, maxVoteNumber);
-            await page.waitForSelector(`button[data-testid="sc-choice-button-${voteNumber}"]`);
-            await page.click(`button[data-testid="sc-choice-button-${voteNumber}"]`);
+                        const targetPage = await target.page();
 
-            await delay(2000);
+                        await targetPage.waitForSelector('button[class*="btn-primary"]');
+                        await targetPage.click('button[class*="btn-primary"]');
 
-            await page.waitForSelector(`button[data-testid="proposal-vote-button"]`);
-            await page.click(`button[data-testid="proposal-vote-button"]`);
+                        await targetPage.waitForSelector('button[data-testid="page-container-footer-next"]');
+                        await targetPage.click('button[data-testid="page-container-footer-next"]');
 
-            await delay(4000);
+                    }
 
-            await page.waitForSelector(`button[data-testid="confirm-vote-button"]`);
-            await page.click(`button[data-testid="confirm-vote-button"]`);
+                    await delay(5000);
 
-            await delay(2000);
+                    if (vote === 'random') {
+                        const voteNumber = randomInteger(0, maxVoteNumber);
+                        await page.waitForSelector(`button[data-testid="sc-choice-button-${voteNumber}"]`);
+                        await page.click(`button[data-testid="sc-choice-button-${voteNumber}"]`);
+
+                        await delay(2000);
+
+                        await page.waitForSelector(`button[data-testid="proposal-vote-button"]`);
+                        await page.click(`button[data-testid="proposal-vote-button"]`);
+
+                        await delay(4000);
+
+                        await page.waitForSelector(`button[data-testid="confirm-vote-button"]`);
+                        await page.click(`button[data-testid="confirm-vote-button"]`);
+
+                        await delay(2000);
 
 
-            const target2 = browser.targets().find(p => p.url().includes(`notification.html`));
-            console.log(browser.targets().map(p => p.url()));
+                        const target2 = browser.targets().find(p => p.url().includes(`notification.html`));
+                        console.log(browser.targets().map(p => p.url()));
 
-            const pg = await target2.page();
+                        const pg = await target2.page();
 
-            await delay(1000);
+                        pg.setDefaultTimeout(120000);
 
-            await pg.setViewport({width: 500, height: 700});
+                        await delay(1000);
 
-            await pg.waitForSelector(`div[data-testid="signature-request-scroll-button"]`);
-            await pg.click(`div[data-testid="signature-request-scroll-button"]`);
+                        await pg.setViewport({width: 500, height: 700});
 
-            await delay(2000);
+                        await pg.waitForSelector(`div[data-testid="signature-request-scroll-button"]`);
+                        await pg.click(`div[data-testid="signature-request-scroll-button"]`);
 
-            await pg.waitForSelector(`button[data-testid="page-container-footer-next"]`);
-            await pg.click(`button[data-testid="page-container-footer-next"]`);
+                        await delay(2000);
+
+                        await pg.waitForSelector(`button[data-testid="page-container-footer-next"]`);
+                        await pg.click(`button[data-testid="page-container-footer-next"]`);
+                    }
+
+                    await delay(15000);
+                }
+            } while(activeProp !== undefined)
         }
-
-        await delay(4000);
 
         await browser.close();
     })();
