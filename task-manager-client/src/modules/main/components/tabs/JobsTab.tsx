@@ -30,7 +30,7 @@ const useStyles = makeStyles()(() => ({
     customForm: {
         margin: '15px',
 
-        '& button': {
+        '& button[class*="containedSizeMedium"]': {
             display: 'none',
         }
     },
