@@ -70,7 +70,7 @@ export const JobsTab = () => {
 
     return (
         <div style={{width: 'calc(100% - 300px)', display: 'flex', flexDirection: 'column'}}>
-            <Paper sx={{height: '300px', margin: '15px  15px 0px', borderRadius: '10px'}}>
+            <Paper sx={{height: '45%', margin: '15px  15px 0px', borderRadius: '10px', overflow: 'auto'}}>
                 <Stack>
                     <div style={{display: 'flex', flexDirection: 'row', gap: '15px', alignItems: 'baseline'}}>
                         <FormControl sx={{ m: 1, width: 300 }}>
