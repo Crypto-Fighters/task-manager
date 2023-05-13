@@ -5,7 +5,7 @@ import {isArray} from "util";
 export const getCommandLine = (jobId: number, params: Record<string, any>) => {
     const job = JobDefinitions.find(job => job.jobId === jobId);
     if (job) {
-        return `/usr/local/nodejs/bin/node ${Scripts[job.activity]} ${Params[job.activity].map(v => `${v}="${isArray(params[v]) ? params[v].join('|') : params[v]}"`).join(' ')}`
+        return `export DISPLAY=:0.0 && /usr/local/nodejs/bin/node ${Scripts[job.activity]} ${Params[job.activity].map(v => `${v}="${isArray(params[v]) ? params[v].join('|') : params[v]}"`).join(' ')}`
     }
     throw 'Невозможной найти задачу!'
 }
