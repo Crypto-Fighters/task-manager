@@ -47,7 +47,8 @@ try {
 
         while (i < 120 && !page) {
             console.log('Try to find ext = ' + i);
-            const pages = await browser.pages()
+            const pages = await browser.pages();
+            console.log(pages.map(p => p.url()));
 
             page = pages.find(p =>
                 p.url().includes(`home.html`) ||
