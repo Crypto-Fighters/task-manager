@@ -45,7 +45,7 @@ try {
         let i = 0;
         let page;
 
-        while (i < 120 || !page) {
+        while (i < 120 && !page) {
             console.log('Try to find ext = ' + i);
             const pages = await browser.pages()
 
