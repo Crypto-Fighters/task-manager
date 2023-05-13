@@ -40,16 +40,23 @@ try {
         });
 
 
-
         await delay(20000);
 
-        const pages = await browser.pages()
+        let i = 0;
+        let page;
 
-        let page = pages.find(p =>
-            p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
-            p.url().includes(`home.html#onboarding/welcome`));
+        while (i < 120 || !page) {
+            console.log('Try to find ext = ' + i);
+            const pages = await browser.pages()
 
-        console.log(JSON.stringify(pages))
+            page = pages.find(p =>
+                p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
+                p.url().includes(`home.html#onboarding/welcome`));
+
+            await delay(1000);
+            i++;
+        }
+
         if (!page) {
             console.log('false');
             page = await browser.newPage();
