@@ -45,16 +45,13 @@ try {
 
         const pages = await browser.pages()
 
-        await delay(6000);
-
-
-
         let page = pages.find(p =>
             p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
             p.url().includes(`home.html#onboarding/welcome`));
 
         if (!page) {
             console.log('false');
+            console.log(JSON.stringify(pages))
             page = await browser.newPage();
             await page.goto(`chrome-extension://${extensionID}/home.html#onboarding/welcome`);
         }
