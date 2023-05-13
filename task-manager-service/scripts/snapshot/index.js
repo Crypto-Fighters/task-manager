@@ -96,6 +96,8 @@ try {
 
         await delay(3000);
 
+        const pages = await browser.pages();
+
         const completionPage = pages.find(p => p.url().includes(`#onboarding/completion`));
         completionPage.setDefaultTimeout(120000);
         await completionPage.waitForSelector('button[data-testid="onboarding-complete-done');
