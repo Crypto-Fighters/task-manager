@@ -23,8 +23,8 @@ function randomInteger(min, max) {
 
 try {
     (async () => {
-        const extensionID = 'lkbmmnnjhbfafcjbfndgbgpaiahcfhep';
-        const pathToExtension = path.join(process.cwd(), extensionID);
+        const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
+        const pathToExtension = path.join('/crypto-fighters/task-manager/task-manager-service', extensionID);
 
         const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
