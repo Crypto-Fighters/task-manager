@@ -25,6 +25,7 @@ try {
     (async () => {
         const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
         const pathToExtension = path.join('/crypto-fighters/task-manager/task-manager-service', extensionID);
+        console.log(pathToExtension);
 
         const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
