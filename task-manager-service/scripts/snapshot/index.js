@@ -28,11 +28,11 @@ try {
 
         const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
-                // '--disable-dev-shm-usage',
+                '--disable-dev-shm-usage',
                 '--no-first-run',
-                // '----no-zygote',
-                // '--single-process',
-                // '--disable-site-isolation-trials',
+                '----no-zygote',
+                '--single-process',
+                '--disable-site-isolation-trials',
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`,
             ],
@@ -52,9 +52,14 @@ try {
         let page = pages.find(p =>
             p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
             p.url().includes(`home.html#onboarding/welcome`));
+
         if (!page) {
-            page = await browser.newPage('');
+            console.log('false');
+            page = await browser.newPage();
             await page.goto(`chrome-extension://${extensionID}/home.html#onboarding/welcome`);
+        }
+        else {
+            console.log('true');
         }
 
         page.setDefaultTimeout(120000);
