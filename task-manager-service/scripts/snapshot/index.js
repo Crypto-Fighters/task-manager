@@ -27,9 +27,9 @@ try {
         const pathToExtension = path.join(process.cwd(), extensionID);
 
         const browser = await puppeteer.launch({headless: 'new', args: [
-                // '--no-sandbox',
+                '--no-sandbox',
                 // '--disable-dev-shm-usage',
-                // '--no-first-run',
+                '--no-first-run',
                 // '----no-zygote',
                 // '--single-process',
                 // '--disable-site-isolation-trials',
