@@ -26,7 +26,7 @@ try {
         const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
         const pathToExtension = path.join(process.cwd(), extensionID);
 
-        const browser = await puppeteer.launch({headless: 'new', args: [
+        const browser = await puppeteer.launch({headless: false, args: [
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--no-first-run',
@@ -50,7 +50,7 @@ try {
             const pages = await browser.pages()
 
             page = pages.find(p =>
-                p.url().includes(`chrome-extension://${extensionID}/home.html`) ||
+                p.url().includes(`home.html`) ||
                 p.url().includes(`home.html#onboarding/welcome`));
 
             await delay(1000);
