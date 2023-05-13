@@ -28,11 +28,11 @@ try {
 
         const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
-                '--disable-dev-shm-usage',
-                '--no-first-run',
-                '----no-zygote',
-                '--single-process',
-                '--disable-site-isolation-trials',
+                // '--disable-dev-shm-usage',
+                // '--no-first-run',
+                // '----no-zygote',
+                // '--single-process',
+                // '--disable-site-isolation-trials',
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`,
             ],
