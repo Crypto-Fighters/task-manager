@@ -41,7 +41,7 @@ try {
 
 
 
-        await delay(6000);
+        await delay(20000);
 
         const pages = await browser.pages()
 
