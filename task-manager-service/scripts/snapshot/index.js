@@ -36,6 +36,7 @@ try {
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`,
             ],
+            executablePath: '/usr/bin/chromium-browser',
         });
 
 
