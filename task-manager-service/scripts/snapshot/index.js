@@ -23,10 +23,10 @@ function randomInteger(min, max) {
 
 try {
     (async () => {
-        const extensionID = 'hbkpbplbjpiieigagpncfimkmedileko';
+        const extensionID = 'lkbmmnnjhbfafcjbfndgbgpaiahcfhep';
         const pathToExtension = path.join(process.cwd(), extensionID);
 
-        const browser = await puppeteer.launch({headless: false, args: [
+        const browser = await puppeteer.launch({headless: 'new', args: [
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--no-first-run',
