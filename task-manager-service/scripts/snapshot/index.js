@@ -65,6 +65,8 @@ try {
 
         await page.click('button[data-testid="metametrics-i-agree"]');
 
+        console.log('start');
+
         let index = 0
         for (const text of phrases[0].split(' ')) {
             await page.type(`input[data-testid="import-srp__srp-word-${index}"]`, text);
